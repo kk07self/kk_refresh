@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Refresh
+
+  Created by 陈康 on 2017/6/21.
+  Copyright © 2017年 陈康. All rights reserved.
+*/
+
+"下拉刷新"       = "Pull down to refresh";
+"释放更新"       = "Update after release";
+"上拉加载"       = "Pull up to load more";
+"释放加载"       = "Load after release";
+"已没有更多数据"  = "No more data";
+"加载中···"     = "Loading···";
