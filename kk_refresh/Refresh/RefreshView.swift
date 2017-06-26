@@ -381,7 +381,7 @@ public extension RefreshView {
 
 
 // MARK: - scrollView扩展属性
-extension UIScrollView {
+public extension UIScrollView {
     
     /// 扩展属性的键值对
     private struct AssociateKeys {
@@ -390,7 +390,7 @@ extension UIScrollView {
     }
     
     /// 头部控件
-    var kk_header: RefreshView {
+    public var kk_header: RefreshView {
         
         set(value) {
             self.addSubview(value)
@@ -404,7 +404,7 @@ extension UIScrollView {
     }
     
     /// 底部控件
-    var kk_footer: RefreshView {
+    public var kk_footer: RefreshView {
         
         set(value) {
             self.addSubview(value)
@@ -418,7 +418,7 @@ extension UIScrollView {
     }
     
     // 当刷新控件要移除scrollView时移除监听
-    open override func willRemoveSubview(_ subview: UIView) {
+    override open func willRemoveSubview(_ subview: UIView) {
         super.willRemoveSubview(subview)
         if let subview = subview as? RefreshView {
             self.removeObserver(subview, forKeyPath: kObserverKey)
