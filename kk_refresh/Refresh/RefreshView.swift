@@ -82,13 +82,6 @@ public class RefreshView : UIView {
     // scrollView的原便宜位置
     fileprivate var superViewOriginOffsetY: CGFloat = 0
     
-    // scrollView的原内边距
-    fileprivate var inset: UIEdgeInsets = UIEdgeInsets.zero  // 保存原来的insets
-    
-    fileprivate var isLayout: Bool = false
-    
-    fileprivate var isFirstRefresh: Bool = false
-    
     // 子控件
     open var indicator: UIActivityIndicatorView!
     open var imageView: UIImageView!
@@ -250,20 +243,30 @@ public class RefreshView : UIView {
 // MARK: - 开始、结束刷新方法
 public extension RefreshView {
     
+    
+    /// 主动刷新方法——
+    public func beginRefresh() {
+        if refreshType == .header {
+            scrollView?.setContentOffset(CGPoint(x:scrollView?.contentOffset.x ?? 0, y: (scrollView?.contentOffset.y ?? 0) - 65), animated: true)
+        } else {
+            beginRefreshing()
+        }
+    }
+    
     /// 开始刷新控件
-    public func beginRefreshing() {
+    fileprivate func beginRefreshing() {
         isRefreshing = true
         status = .refresh
         
         // 悬停
-        var inset = self.inset
+        var inset = scrollView?.contentInset
         if refreshType == .header {
-            inset.top += 64
+            inset?.top += 64
         } else {
-            inset.bottom += 44
+            inset?.bottom += 44
         }
         UIView.animate(withDuration: 0.25) { 
-            (self.scrollView)?.contentInset = inset
+            (self.scrollView)?.contentInset = inset!
         }
         
         // 正在刷新的样式
@@ -303,8 +306,14 @@ public extension RefreshView {
         }
         
         // 去除悬停
+        var inset = scrollView?.contentInset
+        if refreshType == .header {
+            inset?.top -= 64
+        } else {
+            inset?.bottom -= 44
+        }
         UIView.animate(withDuration: 0.25, animations: { 
-            (self.scrollView)?.contentInset = self.inset
+            (self.scrollView)?.contentInset = inset!
         }) { (isComplete) in
             self.status = self.refreshType == .footer ? .footer_normal: .header_normal
         }
@@ -325,7 +334,6 @@ public extension RefreshView {
         self.refreshType = type
         self.status = type == .header ? .header_normal : .footer_normal
         scrollView = (superview as? UIScrollView)
-        inset = scrollView!.contentInset
         superViewOriginOffsetY = scrollView!.contentOffset.y
         scrollView?.addObserver(self, forKeyPath: kObserverKey, options: .new, context: nil)
     }
@@ -348,7 +356,7 @@ public extension RefreshView {
                 // 正在拖拽时不进行刷新，拖拽结束后进行刷新
                 if scrollView.isDragging {
                     if refreshType == .header {
-                        status = point.y <= superViewOriginOffsetY - 64 ? .header_wait : .header_normal
+                        status = point.y < superViewOriginOffsetY - 64 ? .header_wait : .header_normal
                     } else {
                         status = point.y >= scrollView.contentSize.height - scrollView.frame.size.height + 64 ? .footer_wait : .footer_normal
                     }
@@ -357,7 +365,7 @@ public extension RefreshView {
                 
                 // 头部刷新控件的处理
                 if refreshType == .header {
-                    if scrollView.contentOffset.y <= superViewOriginOffsetY - 64 && !isRefreshing {
+                    if scrollView.contentOffset.y < superViewOriginOffsetY - 64 && !isRefreshing {
                         self.beginRefreshing()
                     }
                 } else {
