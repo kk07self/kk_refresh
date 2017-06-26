@@ -182,7 +182,7 @@ public class RefreshView : UIView {
     ///   - complete: 刷新完成后的回调
     /// - Returns: 返回一个实例化对象
     
-    class func kk_refresh(_ style: RefreshStyle, _ complete: @escaping CallBack) -> RefreshView {
+    public class func kk_refresh(_ style: RefreshStyle, _ complete: @escaping CallBack) -> RefreshView {
         let refresh = RefreshView()
         refresh.addSubViews()
         refresh.callBack = complete
@@ -320,7 +320,7 @@ public extension RefreshView {
     /// 添加观察者
     ///
     /// - Parameter type: 是头部还是底部控件
-    public func addObserver(_ type: RefreshType) {
+    fileprivate func addObserver(_ type: RefreshType) {
         // 属性设置初始值
         self.refreshType = type
         self.status = type == .header ? .header_normal : .footer_normal
@@ -418,7 +418,7 @@ public extension UIScrollView {
     }
     
     // 当刷新控件要移除scrollView时移除监听
-    override open func willRemoveSubview(_ subview: UIView) {
+    open override func willRemoveSubview(_ subview: UIView) {
         super.willRemoveSubview(subview)
         if let subview = subview as? RefreshView {
             self.removeObserver(subview, forKeyPath: kObserverKey)
