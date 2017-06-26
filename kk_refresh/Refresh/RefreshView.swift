@@ -140,10 +140,10 @@ public class RefreshView : UIView {
     var isRefreshing = false
     
     // 刷新的样式：头部还是底部
-    var refreshType: RefreshType = .none
+    public var refreshType: RefreshType = .none
     
     // 刷新控件显示的内容状态： 状态的改变会修改到刷新控件的样式，所以要进行调整
-    var status: Status = .none {
+    public var status: Status = .none {
         didSet {
             
             title.text = status.string

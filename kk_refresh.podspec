@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
 s.name         = 'kk_refresh'
-s.version      = '1.0.3'
+s.version      = '1.0.4'
 s.summary      = 'a component of refresh on iOS'
 s.homepage     = 'https://github.com/CoderJFCK/kk_refresh'
 s.description  = <<-DESC
