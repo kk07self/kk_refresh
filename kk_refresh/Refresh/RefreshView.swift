@@ -17,7 +17,7 @@ private let kImageWidth: CGFloat = 44
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /// 控件刷新样式
 // MARK: - 控件刷新样式 ***********************************
-enum RefreshStyle {
+public enum RefreshStyle {
     
     case normal()              // 菊花指示器、title
     case gif([UIImage])        // 图片动画、title
@@ -39,7 +39,7 @@ enum RefreshStyle {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /// 显示状态
 // MARK: - 刷新、加载状态 **********************************
-enum Status {
+public enum Status {
     case none
     case header_normal
     case header_wait
@@ -71,9 +71,9 @@ enum Status {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /// 刷新控件
 // MARK: - 刷新控件 ****************************************核心
-class RefreshView : UIView {
+public class RefreshView : UIView {
     
-    enum RefreshType {
+    public enum RefreshType {
         case header
         case footer
         case none
@@ -100,10 +100,10 @@ class RefreshView : UIView {
     // 父控件
     fileprivate weak var scrollView: UIScrollView?
     
-    typealias CallBack = () -> Void
+    public typealias CallBack = () -> Void
     
     // 保存刷新时执行的操作
-    open var callBack: CallBack?
+    public var callBack: CallBack?
     
     
     /// 刷新的状态
@@ -224,7 +224,7 @@ class RefreshView : UIView {
                         in_top,in_lef,in_rig,in_bot])
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -233,7 +233,7 @@ class RefreshView : UIView {
     }
 
     // 给自己布局位置
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         if refreshType == .footer {
@@ -248,10 +248,10 @@ class RefreshView : UIView {
 
 
 // MARK: - 开始、结束刷新方法
-extension RefreshView {
+public extension RefreshView {
     
     /// 开始刷新控件
-    open func beginRefreshing() {
+    public func beginRefreshing() {
         isRefreshing = true
         status = .refresh
         
@@ -285,7 +285,7 @@ extension RefreshView {
     }
     
     /// 结束刷新控件
-    open func stopRefreshing() {
+    public func stopRefreshing() {
         
         isRefreshing = false
         
@@ -314,13 +314,13 @@ extension RefreshView {
 
 // MARK: - 监听滚动位置
 
-extension RefreshView {
+public extension RefreshView {
     
     
     /// 添加观察者
     ///
     /// - Parameter type: 是头部还是底部控件
-    open func addObserver(_ type: RefreshType) {
+    public func addObserver(_ type: RefreshType) {
         // 属性设置初始值
         self.refreshType = type
         self.status = type == .header ? .header_normal : .footer_normal
@@ -331,7 +331,7 @@ extension RefreshView {
     }
     
     /// 监听滚动范围
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if keyPath == kObserverKey {
             
